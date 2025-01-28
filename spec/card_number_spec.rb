@@ -1,74 +1,52 @@
 require 'spec_helper'
 
-RSpec.describe PolicyNumber do 
+RSpec.describe CardNumber do 
   describe "exists" do
     it "exists" do
-      expect(PolicyNumber).to be_a Class
+      expect(CardNumber).to be_a Class
     end
   end
 
-  describe ".validate_policy_numbers" do
+  describe ".validate_card_numbers" do
     describe "valid" do
-      it "can determine if policy number is valid" do
-        pn1 = PolicyNumber.new("345882865")
-        pn2 = PolicyNumber.new("123456789")
-        result1 = pn1.validate_policy_numbers
-        result2 = pn2.validate_policy_numbers
+      it "can determine if card number is valid" do
+        cn1 = CardNumber.new("5541808923795240")
+        cn2 = CardNumber.new("4024007136512380")
+        result1 = cn1.validate_card_numbers
+        result2 = cn2.validate_card_numbers
         
-        expect(result1).to eq("345882865")
-        expect(result2).to eq("123456789")
+        expect(result1).to eq("5541808923795240")
+        expect(result2).to eq("4024007136512380")
       end
     end
     
     describe "ILL" do
-      it "can determine if policy number is illegible" do
-        pn = PolicyNumber.new("1?2?3?1??")
-        result = pn.validate_policy_numbers
+      it "can determine if card number is illegible" do
+        cn = CardNumber.new("1?2?3?1??0165793")
+        result = cn.validate_card_numbers
         
-        expect(result).to eq("1?2?3?1?? ILL")
+        expect(result).to eq("1?2?3?1??0165793 ILL")
       end
-
-      # it "can determine if policy number is illegible - more than 9 char" do
-      #   result = PolicyNumber.validate_policy_numbers(["1?2?3?1???"])
-        
-      #   expect(result).to eq(["1?2?3?1??? ILL"])
-      # end
-
-      # it "can determine if policy number is illegible - less than 9 char" do
-      #   result = PolicyNumber.validate_policy_numbers(["1?2?3?1?"])
-        
-      #   expect(result).to eq(["1?2?3?1? ILL"])
-      # end
     end
 
     describe "ERR" do
       it "can determine if policy number is an error" do 
-        pn = PolicyNumber.new("987654321")
-        result = pn.validate_policy_numbers
+        cn1 = CardNumber.new("5541801923795240")
+        cn2 = CardNumber.new("4024007106512380")
+        result1 = cn1.validate_card_numbers
+        result2 = cn2.validate_card_numbers
         
-        expect(result).to eq("987654321 ERR")
+        expect(result1).to eq("5541801923795240 ERR")
+        expect(result2).to eq("4024007106512380 ERR")
       end
 
-      it "can determine if policy number is an error - more than 9 char" do 
-        pn = PolicyNumber.new("1234567890")
-        result = pn.validate_policy_numbers
+      it "can determine if policy number is an error - more than 16 char" do 
+        cn = CardNumber.new("12345678901234567")
+        result = cn.validate_card_numbers
         
-        expect(result).to eq("1234567890 ERR")
+        expect(result).to eq("12345678901234567 ERR")
       end
-
-      # it "can determine if policy number is an error - less than 9 char" do 
-      #   result = PolicyNumber.validate_policy_numbers(["12345678"])
-        
-      #   expect(result).to eq(["12345678 ERR"])
-      # end
     end
 
-    # describe "integration test" do
-    #   it "can return array of validated, errored, illegible policy numbers" do 
-    #     pn = PolicyNumber.new("345882865")
-    #     result = PolicyNumber.validate_policy_numbers(["345882865", "1?2?3?1??", "12345678"])
-
-    #     expect(result).to eq(["345882865", "1?2?3?1?? ILL", "12345678 ERR"])
-    #   end
     end
   end

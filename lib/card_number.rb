@@ -12,7 +12,7 @@ class CardNumber
   def validate_card_numbers
     if @card_number.include?("?")
       @card_number += " ILL"
-    elsif @card_number.size != 12
+    elsif @card_number.size != 16
       @card_number += " ERR"
     else 
       if invalid_card_number?
