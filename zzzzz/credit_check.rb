@@ -1,10 +1,8 @@
 class CreditCheck
-  attr_reader :card_number,
-              :limit
+  attr_reader :card_number
 
-  def initialize(card_number, limit)
+  def initialize(card_number)
     @card_number = card_number
-    @limit = limit
   end
 
   def sum_results
